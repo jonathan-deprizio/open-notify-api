@@ -90,10 +90,7 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
             next_sunrise = sunchecker.next_rising(ephem.Sun())
             next_sunset = sunchecker.next_setting(ephem.Sun())
 
-            vws = ephem.Date(last_sunrise)
-            vwe = ephem.Date(last_sunset)
-
-            if last_sunrise > last_sunset:
+            if ephem.Date(last_sunrise) > ephem.Date(last_sunset):
                 sunlight_on_space_station = True
             else:
                 sunlight_on_space_station = False
