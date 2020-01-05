@@ -90,7 +90,7 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
 
             visible = False
             vws = ephem.Date(last_sunrise)
-            vwe = ephem.Date(last_sunrise)
+            vwe = ephem.Date(next_sunset)
 
             if vws < tt < vwe:
                 visible = True
