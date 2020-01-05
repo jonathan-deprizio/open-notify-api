@@ -51,6 +51,7 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
     # Get latest TLE from redis
     tle = json.loads(r.get("iss_tle"))
     iss = ephem.readtle(str(tle[0]), str(tle[1]), str(tle[2]))
+    iss2 = ephem.readtle(str(tle[0]), str(tle[1]), str(tle[2]))
 
     # Set location
     location = ephem.Observer()
@@ -82,17 +83,7 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
             sunchecker.lat = str(lat)
             sunchecker.long = str(lon)
             sunchecker.pressure = 0
-            sunchecker.horizon = '-00:34'
-            
-            sunchecker.elevation = alt
-            last_sunrise_station = sunchecker.previous_rising(ephem.Sun())
-            last_sunset_station = sunchecker.previous_setting(ephem.Sun())
-            if ephem.Date(last_sunrise_station) > ephem.Date(last_sunset_station):
-                sunlight_on_space_station = True
-            else:
-                sunlight_on_space_station = False
-
-            
+            sunchecker.horizon = '-6' # twilight
             sunchecker.elevation = alt
             last_sunrise_ground = sunchecker.previous_rising(ephem.Sun())
             last_sunset_ground = sunchecker.previous_setting(ephem.Sun())
@@ -101,12 +92,12 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
             else:
                 sunlight_on_ground = False
 
-
-            if (sunlight_on_space_station == True) and (sunlight_on_ground == False):
-                visible = True
-            else: 
-                visible = False
-            
+            # check if the station is illuminated 
+            iss2.compute(ephem.Date(tt))
+            if not iss2.eclipsed: 
+                sunlight_on_space_station = True
+            else:
+                sunlight_on_space_station = False
 
 
             passes.append({
@@ -119,8 +110,6 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
                             "maxalt" : str(altt),
                             "maxaltdeg" : str(ephem.degrees(altt)),
                             "visible" : str(visible),
-                            "sunrise_station" : str(last_sunrise_station), 
-                            "sunset_station"  : str(last_sunset_station),
                             "sunrise_ground" : str(last_sunrise_ground), 
                             "sunset_ground"  : str(last_sunset_ground),
                             "station_illuminated" : str(sunlight_on_space_station),
