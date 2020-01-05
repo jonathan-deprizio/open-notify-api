@@ -129,8 +129,8 @@ def get_passes(lon, lat, alt, n, darkskyAPIKey, horizon='599:00'):
 
     # grab the weather
     weatherURI = 'https://api.darksky.net/forecast/{}/{},{}'.format(darkskyAPIKey, lat, lon)
-    r = requests.get(weatherURI)
-    weatherData = r.text
+    weatherResponse = requests.get(weatherURI)
+    weatherData = weatherResponse.text
 
     # Return object
     obj = {"request": {
