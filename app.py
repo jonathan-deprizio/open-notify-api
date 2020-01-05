@@ -1,8 +1,9 @@
 import os
 from flask import Flask, request, render_template, send_from_directory
 import iss
-from util import safe_float, json, jsonp
+from util import safe_float, json, jsonp, fetch_darksky_api_key
 
+darkskyAPIKey = False
 app = Flask(__name__)
 
 # APIs:
@@ -219,7 +220,7 @@ def iss_pass():
         horizon = '599:00'
 
     # Calculate data and return
-    d = iss.get_passes(lon, lat, alt, int(n), horizon)
+    d = iss.get_passes(lon, lat, alt, int(n), horizon, darkskyAPIKey)
     return dict({"message": "success"}, **d), 200
 
 
@@ -243,5 +244,6 @@ def astros():
 
 
 if __name__ == "__main__":
+    darkskyAPIKey = fetch_darksky_api_key()
     app.debug = True
     app.run(host='0.0.0.0')

@@ -1,6 +1,7 @@
 from functools import wraps
 from flask import jsonify, request, current_app
-
+import boto3
+import os
 
 def safe_float(s, range, default=False):
     try:
@@ -40,3 +41,9 @@ def jsonp(func):
         else:
             return func(*args, **kwargs)
     return decorated_function
+
+def fetch_darksky_api_key():
+    c = boto3.client('secretsmanager')
+    secret = c.get_secret_value(SecretId=os.environ['DarkskyAPISecretARN']
+    secret = json.loads(secret)
+    return secret['apikey']
