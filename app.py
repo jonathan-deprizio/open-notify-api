@@ -208,14 +208,18 @@ def iss_pass():
 
     n = request.args.get('n', False)
     if n:
-        n = safe_float(n, (1, 100))
+        n = safe_float(n, (1, 250))
         if not n:
-            return {"message": "failure", "reason": "Number of passes must be number between 1 and 100"}, 400
+            return {"message": "failure", "reason": "Number of passes must be number between 1 and 250"}, 400
     else:
         n = 5
 
+    horizon = request.args.get('horizon', False)
+    if not horizon:
+        horizon = '599:00'
+
     # Calculate data and return
-    d = iss.get_passes(lon, lat, alt, int(n))
+    d = iss.get_passes(lon, lat, alt, int(n), horizon)
     return dict({"message": "success"}, **d), 200
 
 
@@ -240,4 +244,4 @@ def astros():
 
 if __name__ == "__main__":
     app.debug = True
-    app.run()
+    app.run(host='0.0.0.0')

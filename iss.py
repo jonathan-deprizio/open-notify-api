@@ -42,8 +42,11 @@ def get_tle_update():
     return r.get("iss_tle_last_update")
 
 
-def get_passes(lon, lat, alt, n):
+def get_passes(lon, lat, alt, n, horizon='599:00'):
     """Compute n number of passes of the ISS for a location"""
+
+
+
 
     # Get latest TLE from redis
     tle = json.loads(r.get("iss_tle"))
@@ -54,15 +57,15 @@ def get_passes(lon, lat, alt, n):
     location.lat = str(lat)
     location.long = str(lon)
     location.elevation = alt
-
-    # Override refration calculation
     location.pressure = 0
-    location.horizon = '10:00'
+
+    # Reset horizon to our horizon threshold to see the space 
+    # station.
+    location.horizon = horizon
 
     # Set time now
     now = datetime.datetime.utcnow()
     location.date = now
-
     # Predict passes
     passes = []
     for p in xrange(n):
@@ -71,8 +74,49 @@ def get_passes(lon, lat, alt, n):
         year, month, day, hour, minute, second = tr.tuple()
         dt = datetime.datetime(year, month, day, hour, minute, int(second))
 
-        if duration > 60:
-            passes.append({"risetime": timegm(dt.timetuple()), "duration": duration})
+        if duration > 30:
+
+            # check if the time of day is appropriate for station viewing 
+            sunchecker = ephem.Observer()
+            sunchecker.date = ephem.Date(tt + (90*ephem.minute))
+            sunchecker.lat = str(lat)
+            sunchecker.long = str(lon)
+            sunchecker.elevation = alt
+            sunchecker.pressure = 0
+            sunchecker.horizon = '-00:34'
+            
+            last_sunrise = sunchecker.previous_rising(ephem.Sun())
+            next_sunset = sunchecker.next_setting(ephem.Sun())
+
+            # TODO compute actual twilight times; for now, just say it's two hours..?
+            visible = False
+            vws = ephem.Date(last_sunrise + (-90*ephem.minute))
+            vwe = ephem.Date(last_sunrise + (90*ephem.minute))
+
+            if vws < tt < vwe:
+                visible = True
+            # or sunset
+#            if (tt < (next_sunset + (90*ephem.minute))):
+#                visible = True
+            
+            if visible:
+                passes.append({
+                                "transit start time" : str(tr),
+                                "transit end time" : str(ts),
+                                "transit max elevation time" : str(tt),
+                                "duration in seconds"  : duration,
+                                "riseazimuth":str(azr),
+                                "setazimuth" :str(azs),
+                                "maxalt" : str(altt),
+                                "maxalttype" : str(type(altt)),
+                                "maxaltdeg" : str(ephem.degrees(altt)),
+                                "visible" : str(visible),
+                                "sunrise" : str(last_sunrise), 
+                                "sunset"  : str(next_sunset),
+                                "vws"     : str(vws),
+                                "vwe"     : str(vwe),
+                                "types"   : "{},{},{}".format(type(tt), type(vws), type(vwe))
+                                    })
 
         # Increase the time by more than a pass and less than an orbit
         location.date = tr + 25*ephem.minute
@@ -84,6 +128,7 @@ def get_passes(lon, lat, alt, n):
         "longitude": lon,
         "altitude": alt,
         "passes": n,
+        "horizon":horizon
         },
         "response": passes,
     }
