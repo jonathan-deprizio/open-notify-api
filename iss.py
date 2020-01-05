@@ -6,6 +6,7 @@ import redis
 import json
 import os
 import boto3
+import requests
 
 REDIS_URL = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
 r = redis.StrictRedis.from_url(REDIS_URL)
@@ -124,6 +125,13 @@ def get_passes(lon, lat, alt, n, darkskyAPIKey, horizon='599:00'):
         # Increase the time by more than a pass and less than an orbit
         location.date = tr + 25*ephem.minute
 
+
+
+    # grab the weather
+    weatherURI = 'https://api.darksky.net/forecast/{}/{},{}'.format(darkskyAPIKey, lat, lon)
+    r = requests.get(weatherURI)
+    weatherData = r.text
+
     # Return object
     obj = {"request": {
         "datetime": timegm(now.timetuple()),
@@ -131,7 +139,8 @@ def get_passes(lon, lat, alt, n, darkskyAPIKey, horizon='599:00'):
         "longitude": lon,
         "altitude": alt,
         "passes": n,
-        "horizon":horizon
+        "horizon":horizon,
+        "weatherData":weatherData
         },
         "response": passes,
     }
