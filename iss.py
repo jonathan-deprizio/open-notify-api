@@ -96,7 +96,7 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
             sunchecker.elevation = alt
             last_sunrise = sunchecker.previous_rising(ephem.Sun())
             last_sunset = sunchecker.previous_setting(ephem.Sun())
-            if ephem.Date(last_sunrise) > ephem.Date(last_sunset):
+            if ephem.Date(last_sunrise) < ephem.Date(last_sunset):
                 sunlight_on_ground = True
             else:
                 sunlight_on_ground = False
