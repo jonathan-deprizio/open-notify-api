@@ -104,21 +104,22 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
             else:
                 visible = False
 
-            passes.append({
-                            "transit start time" : str(tr),
-                            "transit end time" : str(ts),
-                            "transit max elevation time" : str(tt),
-                            "duration in seconds"  : duration,
-                            "riseazimuth":str(azr),
-                            "setazimuth" :str(azs),
-                            "maxalt" : str(altt),
-                            "maxaltdeg" : str(ephem.degrees(altt)),
-                            "visible" : str(visible),
-                            "sunrise_ground" : str(last_sunrise_ground), 
-                            "sunset_ground"  : str(last_sunset_ground),
-                            "station_illuminated" : str(sunlight_on_space_station),
-                            "gound_illuminated" : str(sunlight_on_ground)
-                                })
+            if visible:
+                passes.append({
+                                "transit start time" : str(tr),
+                                "transit end time" : str(ts),
+                                "transit max elevation time" : str(tt),
+                                "duration in seconds"  : duration,
+                                "riseazimuth":str(azr),
+                                "setazimuth" :str(azs),
+                                "maxalt" : str(altt),
+                                "maxaltdeg" : str(ephem.degrees(altt)),
+                                "visible" : str(visible),
+                                "sunrise_ground" : str(last_sunrise_ground), 
+                                "sunset_ground"  : str(last_sunset_ground),
+                                "station_illuminated" : str(sunlight_on_space_station),
+                                "gound_illuminated" : str(sunlight_on_ground)
+                                    })
 
         # Increase the time by more than a pass and less than an orbit
         location.date = tr + 25*ephem.minute
