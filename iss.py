@@ -78,10 +78,10 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
 
             # check if the time of day is appropriate for station viewing 
             sunchecker = ephem.Observer()
-            sunchecker.date = ephem.Date(tt + (90*ephem.minute))
+            sunchecker.date = ephem.Date(tt)
             sunchecker.lat = str(lat)
             sunchecker.long = str(lon)
-            sunchecker.elevation = alt
+            sunchecker.elevation = 408773
             sunchecker.pressure = 0
             sunchecker.horizon = '-00:34'
             
