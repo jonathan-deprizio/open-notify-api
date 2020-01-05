@@ -43,7 +43,7 @@ def get_tle_update():
     return r.get("iss_tle_last_update")
 
 
-def get_passes(lon, lat, alt, n, horizon='599:00', darkskyAPIKey):
+def get_passes(lon, lat, alt, n, darkskyAPIKey, horizon='599:00'):
     """Compute n number of passes of the ISS for a location"""
 
 
