@@ -99,6 +99,10 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
             else:
                 sunlight_on_space_station = False
 
+            if (sunlight_on_space_station == True) and (sunlight_on_ground == False):
+                visible = True
+            else:
+                visible = False
 
             passes.append({
                             "transit start time" : str(tr),
