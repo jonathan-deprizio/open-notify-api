@@ -101,15 +101,15 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
 #            if (tt < (next_sunset + (90*ephem.minute))):
 #                visible = True
             
-            sunchecker.elevation = alt
-            last_sunrise = sunchecker.previous_rising(ephem.Sun())
-            next_sunset = sunchecker.next_setting(ephem.Sun())
-            vws = ephem.Date(last_sunrise)
-            vwe = ephem.Date(next_sunset)
-            if vws < tt < vwe:
-                sunlight_on_ground = True
-            else:
-                sunlight_on_ground = False
+#            sunchecker.elevation = alt
+#            last_sunrise = sunchecker.previous_rising(ephem.Sun())
+#            next_sunset = sunchecker.next_setting(ephem.Sun())
+#            vws = ephem.Date(last_sunrise)
+#            vwe = ephem.Date(next_sunset)
+#            if vws < tt < vwe:
+#                sunlight_on_ground = True
+#            else:
+#                sunlight_on_ground = False
 
 
             if (sunlight_on_space_station == True):
