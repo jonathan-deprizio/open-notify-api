@@ -81,23 +81,37 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
             sunchecker.date = ephem.Date(tt)
             sunchecker.lat = str(lat)
             sunchecker.long = str(lon)
-            sunchecker.elevation = 408773
             sunchecker.pressure = 0
             sunchecker.horizon = '-6'
             
+            sunchecker.elevation = 408773
             last_sunrise = sunchecker.previous_rising(ephem.Sun())
             next_sunset = sunchecker.next_setting(ephem.Sun())
-
-            visible = False
             vws = ephem.Date(last_sunrise)
             vwe = ephem.Date(next_sunset)
 
             if vws < tt < vwe:
-                visible = True
+                sunlight_on_space_station = True
             # or sunset
 #            if (tt < (next_sunset + (90*ephem.minute))):
 #                visible = True
             
+            sunchecker.elevation = alt
+            last_sunrise = sunchecker.previous_rising(ephem.Sun())
+            next_sunset = sunchecker.next_setting(ephem.Sun())
+            vws = ephem.Date(last_sunrise)
+            vwe = ephem.Date(next_sunset)
+            if vws < tt < vwe:
+                sunlight_on_ground = True
+
+
+            if (sunlight_on_space_station == True) and (sunlight_on_ground == False):
+                visible = True
+            else: 
+                visible = False
+            
+
+
             passes.append({
                             "transit start time" : str(tr),
                             "transit end time" : str(ts),
