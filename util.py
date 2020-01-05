@@ -2,6 +2,7 @@ from functools import wraps
 from flask import jsonify, request, current_app
 import boto3
 import os
+import json as nativejson
 
 def safe_float(s, range, default=False):
     try:
@@ -43,7 +44,8 @@ def jsonp(func):
     return decorated_function
 
 def fetch_darksky_api_key():
+    DSSecretARN = os.environ['DarkSkyAPISecretARN']
     c = boto3.client('secretsmanager')
-    secret = c.get_secret_value(SecretId=os.environ['DarkskyAPISecretARN']
-    secret = json.loads(secret)
-    return secret['apikey']
+    secret = c.get_secret_value(SecretId=DSSecretARN)
+    secret = secret['SecretString']
+    return nativejson.loads(secret)['apikey']

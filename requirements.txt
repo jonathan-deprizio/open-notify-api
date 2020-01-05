@@ -9,3 +9,4 @@ pyephem==3.7.6.0
 redis==2.10.5
 Werkzeug==0.15.3
 boto3
+json
