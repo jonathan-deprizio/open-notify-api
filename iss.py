@@ -88,10 +88,9 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
             last_sunrise = sunchecker.previous_rising(ephem.Sun())
             next_sunset = sunchecker.next_setting(ephem.Sun())
 
-            # TODO compute actual twilight times; for now, just say it's two hours..?
             visible = False
-            vws = ephem.Date(last_sunrise + (-90*ephem.minute))
-            vwe = ephem.Date(last_sunrise + (90*ephem.minute))
+            vws = ephem.Date(last_sunrise)
+            vwe = ephem.Date(last_sunrise)
 
             if vws < tt < vwe:
                 visible = True
@@ -99,24 +98,21 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
 #            if (tt < (next_sunset + (90*ephem.minute))):
 #                visible = True
             
-            if visible:
-                passes.append({
-                                "transit start time" : str(tr),
-                                "transit end time" : str(ts),
-                                "transit max elevation time" : str(tt),
-                                "duration in seconds"  : duration,
-                                "riseazimuth":str(azr),
-                                "setazimuth" :str(azs),
-                                "maxalt" : str(altt),
-                                "maxalttype" : str(type(altt)),
-                                "maxaltdeg" : str(ephem.degrees(altt)),
-                                "visible" : str(visible),
-                                "sunrise" : str(last_sunrise), 
-                                "sunset"  : str(next_sunset),
-                                "vws"     : str(vws),
-                                "vwe"     : str(vwe),
-                                "types"   : "{},{},{}".format(type(tt), type(vws), type(vwe))
-                                    })
+            passes.append({
+                            "transit start time" : str(tr),
+                            "transit end time" : str(ts),
+                            "transit max elevation time" : str(tt),
+                            "duration in seconds"  : duration,
+                            "riseazimuth":str(azr),
+                            "setazimuth" :str(azs),
+                            "maxalt" : str(altt),
+                            "maxaltdeg" : str(ephem.degrees(altt)),
+                            "visible" : str(visible),
+                            "sunrise" : str(last_sunrise), 
+                            "sunset"  : str(next_sunset),
+                            "vws"     : str(vws),
+                            "vwe"     : str(vwe),
+                                })
 
         # Increase the time by more than a pass and less than an orbit
         location.date = tr + 25*ephem.minute
