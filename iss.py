@@ -95,6 +95,8 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
 
             if vws < tt < vwe:
                 sunlight_on_space_station = True
+            else:
+                sunlight_on_space_station = False
             # or sunset
 #            if (tt < (next_sunset + (90*ephem.minute))):
 #                visible = True
@@ -106,6 +108,8 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
             vwe = ephem.Date(next_sunset)
             if vws < tt < vwe:
                 sunlight_on_ground = True
+            else:
+                sunlight_on_ground = False
 
 
             if (sunlight_on_space_station == True) and (sunlight_on_ground == False):
