@@ -122,7 +122,9 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
                             "sunrise_station" : str(last_sunrise_station), 
                             "sunset_station"  : str(last_sunset_station),
                             "sunrise_ground" : str(last_sunrise_ground), 
-                            "sunset_ground"  : str(last_sunset_ground)
+                            "sunset_ground"  : str(last_sunset_ground),
+                            "station_illuminated" : str(sunlight_on_space_station),
+                            "gound_illuminated" : str(sunlight_on_ground)
                                 })
 
         # Increase the time by more than a pass and less than an orbit
