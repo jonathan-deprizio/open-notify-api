@@ -85,18 +85,18 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
             sunchecker.horizon = '-6'
             
             sunchecker.elevation = 408773
-            last_sunrise = sunchecker.previous_rising(ephem.Sun())
-            last_sunset = sunchecker.previous_setting(ephem.Sun())
-            if ephem.Date(last_sunrise) > ephem.Date(last_sunset):
+            last_sunrise_station = sunchecker.previous_rising(ephem.Sun())
+            last_sunset_station = sunchecker.previous_setting(ephem.Sun())
+            if ephem.Date(last_sunrise_station) > ephem.Date(last_sunset_station):
                 sunlight_on_space_station = True
             else:
                 sunlight_on_space_station = False
 
             
             sunchecker.elevation = alt
-            last_sunrise = sunchecker.previous_rising(ephem.Sun())
-            last_sunset = sunchecker.previous_setting(ephem.Sun())
-            if ephem.Date(last_sunrise) < ephem.Date(last_sunset):
+            last_sunrise_ground = sunchecker.previous_rising(ephem.Sun())
+            last_sunset_ground = sunchecker.previous_setting(ephem.Sun())
+            if ephem.Date(last_ground) > ephem.Date(last_sunset_ground):
                 sunlight_on_ground = True
             else:
                 sunlight_on_ground = False
@@ -119,8 +119,10 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
                             "maxalt" : str(altt),
                             "maxaltdeg" : str(ephem.degrees(altt)),
                             "visible" : str(visible),
-                            "sunrise" : str(last_sunrise), 
-                            "sunset"  : str(last_sunset)
+                            "sunrise_station" : str(last_sunrise_station), 
+                            "sunset_station"  : str(last_sunset_station),
+                            "sunrise_ground" : str(last_sunrise_ground), 
+                            "sunset_ground"  : str(last_sunset_ground)
                                 })
 
         # Increase the time by more than a pass and less than an orbit
