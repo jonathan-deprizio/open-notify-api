@@ -87,7 +87,7 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
             sunchecker.elevation = 408773
             last_sunrise = sunchecker.previous_rising(ephem.Sun())
             last_sunset = sunchecker.previous_setting(ephem.Sun())
-            next_sunrise = sunchecker.next_sunrise(ephem.Sun())
+            next_sunrise = sunchecker.next_rising(ephem.Sun())
             next_sunset = sunchecker.next_setting(ephem.Sun())
 
             vws = ephem.Date(last_sunrise)
