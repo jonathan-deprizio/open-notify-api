@@ -84,7 +84,7 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
             sunchecker.pressure = 0
             sunchecker.horizon = '-6'
             
-            sunchecker.elevation = 408773
+            sunchecker.elevation = 40877300
             last_sunrise_station = sunchecker.previous_rising(ephem.Sun())
             last_sunset_station = sunchecker.previous_setting(ephem.Sun())
             if ephem.Date(last_sunrise_station) > ephem.Date(last_sunset_station):
