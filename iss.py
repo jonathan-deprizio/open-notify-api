@@ -93,7 +93,7 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
             vws = ephem.Date(last_sunrise)
             vwe = ephem.Date(last_sunset)
 
-            if vws < tt < vwe:
+            if last_sunrise > last_sunset:
                 sunlight_on_space_station = True
             else:
                 sunlight_on_space_station = False
