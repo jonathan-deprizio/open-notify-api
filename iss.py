@@ -127,9 +127,7 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
                             "maxaltdeg" : str(ephem.degrees(altt)),
                             "visible" : str(visible),
                             "sunrise" : str(last_sunrise), 
-                            "sunset"  : str(next_sunset),
-                            "vws"     : str(vws),
-                            "vwe"     : str(vwe),
+                            "sunset"  : str(last_sunset)
                                 })
 
         # Increase the time by more than a pass and less than an orbit
