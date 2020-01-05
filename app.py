@@ -220,7 +220,7 @@ def iss_pass():
         horizon = '599:00'
 
     # Calculate data and return
-    d = iss.get_passes(lon, lat, alt, int(n), horizon, darkskyAPIKey)
+    d = iss.get_passes(lon, lat, alt, int(n), darkskyAPIKey, horizon)
     return dict({"message": "success"}, **d), 200
 
 
