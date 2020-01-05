@@ -112,7 +112,7 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
                 sunlight_on_ground = False
 
 
-            if (sunlight_on_space_station == True) and (sunlight_on_ground == False):
+            if (sunlight_on_space_station == True):
                 visible = True
             else: 
                 visible = False
