@@ -5,6 +5,7 @@ from math import degrees
 import redis
 import json
 import os
+import boto3
 
 REDIS_URL = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
 r = redis.StrictRedis.from_url(REDIS_URL)
@@ -42,10 +43,8 @@ def get_tle_update():
     return r.get("iss_tle_last_update")
 
 
-def get_passes(lon, lat, alt, n, horizon='599:00'):
+def get_passes(lon, lat, alt, n, horizon='599:00', darkskyAPIKey):
     """Compute n number of passes of the ISS for a location"""
-
-
 
 
     # Get latest TLE from redis
@@ -118,7 +117,8 @@ def get_passes(lon, lat, alt, n, horizon='599:00'):
                                 "sunrise_ground" : str(last_sunrise_ground), 
                                 "sunset_ground"  : str(last_sunset_ground),
                                 "station_illuminated" : str(sunlight_on_space_station),
-                                "gound_illuminated" : str(sunlight_on_ground)
+                                "gound_illuminated" : str(sunlight_on_ground),
+                                "darkskyAPIKeyHint" : str(darkskyAPIKey)[0]
                                     })
 
         # Increase the time by more than a pass and less than an orbit
